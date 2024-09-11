@@ -12,7 +12,7 @@ export const prosConsUseCase = async (prompt: string) => {
         const data = await resp.json() as ProsConsResponse;
         return {
             ok: true,
-            content: data
+            ...data
         }
     } catch (error) {
         return {

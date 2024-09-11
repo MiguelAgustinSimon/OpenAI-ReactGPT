@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { MyMessage } from '../../components/chat-bubbles/MyMessage';
 import { TextMessageBox } from '../../components/chat-input-boxes/TextMessageBox';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
-import { prosConsStreamUseCase } from '../../../core/use-cases/pros-cons-stream.use-case';
 import { GptStreamMessage } from '../../components/chat-bubbles/GptStreamMessage';
 import { prosConsStreamGeneratorUseCase } from '../../../core/use-cases/pros-cons-stream-generator.use-case';
 
@@ -13,7 +12,7 @@ interface Message {
 
 export const ProsConsStreamPage = () => {
   const abortController = useRef(new AbortController());
-  const isRunning = useRef(false)
+  const isRunning = useRef(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([])
@@ -26,9 +25,9 @@ export const ProsConsStreamPage = () => {
     }
 
     setIsLoading(true);
-    // isRunning.current = true;
+    isRunning.current = true;
     setMessages((prev) => [...prev, { text: text, isGpt: false }]);
-    const stream = await prosConsStreamGeneratorUseCase(text);
+    const stream = prosConsStreamGeneratorUseCase(text, abortController.current.signal);
     setIsLoading(false);
     setMessages((messages) => [...messages, { text: '', isGpt: true }]);
     for await (const text of stream) {
@@ -38,7 +37,7 @@ export const ProsConsStreamPage = () => {
         return newMessages;
       });
     }
-    // isRunning.current = false;
+    isRunning.current = false;
   };
 
   return (

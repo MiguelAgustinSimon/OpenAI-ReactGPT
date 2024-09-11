@@ -1,6 +1,6 @@
 
 
-export async function* prosConsStreamGeneratorUseCase(prompt: string) {
+export async function* prosConsStreamGeneratorUseCase(prompt: string, abortSignal:AbortSignal) {
   try {
 
     const resp = await fetch(`${import.meta.env.VITE_API}/pros-cons-discusser/stream`, {
@@ -9,7 +9,7 @@ export async function* prosConsStreamGeneratorUseCase(prompt: string) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ prompt }),
-      // todo: abortSignal
+      signal:abortSignal
     });
 
     if (!resp.ok) throw new Error('No se pudo realizar la comparación');
