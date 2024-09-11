@@ -19,6 +19,8 @@ export const AudioToTextPage = () => {
   const handlePost = async (text: string, audioFile: File) => {
     setIsLoading(true);
     setMessages((prev) => [...prev, { text: text, isGpt: false }]);
+    console.log(audioFile);
+    
     const resp = await audioToTextUseCase(audioFile, text);
     if (!resp) return;
 
