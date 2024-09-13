@@ -4,6 +4,7 @@ import { MyMessage } from '../../components/chat-bubbles/MyMessage';
 import { TypingLoader } from '../../components/loaders/TypingLoader';
 import { TextMessageBoxFile } from '../../components/chat-input-boxes/TextMessageBoxFile';
 import { audioToTextUseCase } from '../../../core/use-cases/audio-to-text.use-case';
+import { RecordFile } from '../../components/chat-input-boxes/RecordFile';
 
 
 interface Message {
@@ -19,7 +20,6 @@ export const AudioToTextPage = () => {
   const handlePost = async (text: string, audioFile: File) => {
     setIsLoading(true);
     setMessages((prev) => [...prev, { text: text, isGpt: false }]);
-    console.log(audioFile);
     
     const resp = await audioToTextUseCase(audioFile, text);
     if (!resp) return;
@@ -78,7 +78,8 @@ ${segment.text}
         </div>
       </div>
 
-      <TextMessageBoxFile onSendMessage={handlePost} placeholder='Escribe aquí lo que deseas' disableCorrections accept='audio/*'></TextMessageBoxFile>
+      {/* <TextMessageBoxFile onSendMessage={handlePost} placeholder='Escribe aquí lo que deseas' disableCorrections accept='audio/*'></TextMessageBoxFile> */}
+      <RecordFile onSendMessage={handlePost}></RecordFile>
     </div >
   )
 }
